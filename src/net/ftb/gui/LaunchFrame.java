@@ -158,7 +158,7 @@ public class LaunchFrame extends JFrame {
 		DownloadUtils thread = new DownloadUtils();
 		thread.start();
 
-		Logger.logInfo("FTBLaunch starting up (version "+ version + ")");
+		Logger.logInfo("FTBLaunch [Neoxx Edition] starting up (version "+ version + ")");
 		Logger.logInfo("Java version: "+System.getProperty("java.version"));
 		Logger.logInfo("Java vendor: "+System.getProperty("java.vendor"));
 		Logger.logInfo("Java home: "+System.getProperty("java.home"));
@@ -241,7 +241,7 @@ public class LaunchFrame extends JFrame {
 	public LaunchFrame(final int tab) {
 		setFont(new Font("a_FuturaOrto", Font.PLAIN, 12));
 		setResizable(false);
-		setTitle("Feed the Beast Launcher v" + version);
+		setTitle("Feed the Beast Launcher [Neoxx Edition] v" + version);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/image/logo_ftb.png")));
 
 		panel = new JPanel();
