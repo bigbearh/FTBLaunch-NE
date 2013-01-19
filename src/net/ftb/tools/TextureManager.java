@@ -133,7 +133,7 @@ public class TextureManager extends JDialog {
 			String installPath = Settings.getSettings().getInstallPath();
 			new File(installPath, compDir + sep + "minecraft" + sep + "texturepacks" + sep).mkdirs();
 			new File(installPath, compDir + sep + "minecraft" + sep + "texturepacks" + sep + texturePackName).createNewFile();
-			if(downloadUrl(installPath + sep + compDir + sep + "minecraft" + sep + "texturepacks" + sep + texturePackName, DownloadUtils.getCreeperhostLink("texturepacks%5E" + dir.replace(" ", "_") + "%5E" + compDir + "%5E" + packVer + "%5E" + texturePackName))) {
+			if(downloadUrl(installPath + sep + compDir + sep + "minecraft" + sep + "texturepacks" + sep + texturePackName, DownloadUtils.getHostLink("texturepacks%5E" + dir.replace(" ", "_") + "%5E" + compDir + "%5E" + packVer + "%5E" + texturePackName))) {
 				File versionFile = new File(installPath, compDir + sep + "minecraft" + sep + "texturepacks" + sep + "textureVersions");
 				installedTextures.put(dir.toLowerCase(), packVer);
 				BufferedWriter out = new BufferedWriter(new FileWriter(versionFile));

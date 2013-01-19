@@ -49,7 +49,7 @@ public class DownloadUtils extends Thread {
 	 * @return - the direct link
 	 * @throws NoSuchAlgorithmException - see md5
 	 */
-	public static String getCreeperhostLink(String file) throws NoSuchAlgorithmException {
+	public static String getHostLink(String file) throws NoSuchAlgorithmException {
 		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
 		resolved += "/direct/" + file;
 		HttpURLConnection connection = null;
@@ -71,7 +71,7 @@ public class DownloadUtils extends Thread {
 	 * @param file - the name of the file, as saved to the repo (including extension)
 	 * @return - the direct link
 	 */
-	public static String getStaticCreeperhostLink(String file) {
+	public static String getStaticHostLink(String file) {
 		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
 		resolved += "/static/" + file;
 		HttpURLConnection connection = null;
@@ -98,7 +98,7 @@ public class DownloadUtils extends Thread {
 	 */
 	public static boolean staticFileExists(String file) {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(getStaticCreeperhostLink(file)).openStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(getStaticHostLink(file)).openStream()));
 			return !reader.readLine().toLowerCase().contains("not found");
 		} catch (Exception e) {
 			return false;

@@ -245,7 +245,7 @@ public class Settings extends Properties {
 	}
 
 	public boolean getSnooper() {
-		return Boolean.parseBoolean(getProperty("snooperDisable", "false"));
+		return Boolean.parseBoolean(getProperty("snooperDisable", "true"));
 	}
 
 	public String getAdditionalJavaOptions() {

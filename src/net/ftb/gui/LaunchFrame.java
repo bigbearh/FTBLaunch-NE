@@ -104,9 +104,8 @@ public class LaunchFrame extends JFrame {
 	public static JPanel panel;
 	private JPanel footer = new JPanel();
 	private JLabel footerLogo = new JLabel(new ImageIcon(this.getClass().getResource("/image/logo_ftb.png")));
-	private JLabel footerCreeper = new JLabel(new ImageIcon(this.getClass().getResource("/image/logo_creeperHost.png")));
 	private JLabel tpInstallLocLbl = new JLabel();
-	private JButton launch = new JButton(), edit = new JButton(), donate = new JButton(), serverbutton = new JButton(), mapInstall = new JButton(), serverMap = new JButton(), tpInstall = new JButton();
+	private JButton launch = new JButton(), edit = new JButton(), serverbutton = new JButton(), mapInstall = new JButton(), serverMap = new JButton(), tpInstall = new JButton();
 
 	private static String[] dropdown_ = {"Select Profile", "Create Profile"};
 	private static JComboBox users, tpInstallLocation, mapInstallLocation;
@@ -276,19 +275,6 @@ public class LaunchFrame extends JFrame {
 			@Override public void mouseEntered(MouseEvent arg0) { }
 		});
 
-		footerCreeper.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		footerCreeper.setBounds(72, 20, 132, 42);
-		footerCreeper.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				OSUtils.browse("http://www.creeperhost.net/aff.php?aff=293");
-			}
-			@Override public void mouseReleased(MouseEvent arg0) { }
-			@Override public void mousePressed(MouseEvent arg0) { }
-			@Override public void mouseExited(MouseEvent arg0) { }
-			@Override public void mouseEntered(MouseEvent arg0) { }
-		});
-
 		dropdown_[0] = I18N.getLocaleString("PROFILE_SELECT");
 		dropdown_[1] = I18N.getLocaleString("PROFILE_CREATE");
 
@@ -301,16 +287,6 @@ public class LaunchFrame extends JFrame {
 				}
 			}
 		}
-
-		donate = new JButton(I18N.getLocaleString("DONATE_BUTTON"));
-		donate.setBounds(390, 20, 80, 30);
-		donate.setEnabled(false);
-		donate.setToolTipText("Coming Soon...");
-		donate.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 
 		users.setBounds(550, 20, 150, 30);
 		users.addActionListener(new ActionListener() {
@@ -367,9 +343,9 @@ public class LaunchFrame extends JFrame {
 						try {
 							String version = (Settings.getSettings().getPackVer().equalsIgnoreCase("recommended version") || Settings.getSettings().getPackVer().equalsIgnoreCase("newest version")) ? ModPack.getSelectedPack().getVersion().replace(".", "_") : Settings.getSettings().getPackVer().replace(".", "_");
 							if(ModPack.getSelectedPack().isPrivatePack()) {
-								OSUtils.browse(DownloadUtils.getCreeperhostLink("privatepacks%5E" + ModPack.getSelectedPack().getDir() + "%5E" + version + "%5E" + ModPack.getSelectedPack().getServerUrl()));
+								OSUtils.browse(DownloadUtils.getHostLink("privatepacks%5E" + ModPack.getSelectedPack().getDir() + "%5E" + version + "%5E" + ModPack.getSelectedPack().getServerUrl()));
 							} else {
-								OSUtils.browse(DownloadUtils.getCreeperhostLink("modpacks%5E" + ModPack.getSelectedPack().getDir() + "%5E" + version + "%5E" + ModPack.getSelectedPack().getServerUrl()));
+								OSUtils.browse(DownloadUtils.getHostLink("modpacks%5E" + ModPack.getSelectedPack().getDir() + "%5E" + version + "%5E" + ModPack.getSelectedPack().getServerUrl()));
 							}
 							TrackerUtils.sendPageView(ModPack.getSelectedPack().getName() + " Server Download", ModPack.getSelectedPack().getName());
 						} catch (NoSuchAlgorithmException e) { }
@@ -405,7 +381,7 @@ public class LaunchFrame extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				if(mapsPane.mapPanels.size() > 0 && getSelectedMapIndex() >= 0) {
 					try {
-						OSUtils.browse(DownloadUtils.getCreeperhostLink(Map.getMap(LaunchFrame.getSelectedMapIndex()).getUrl()));
+						OSUtils.browse(DownloadUtils.getHostLink(Map.getMap(LaunchFrame.getSelectedMapIndex()).getUrl()));
 					} catch (NoSuchAlgorithmException e) { }
 				}
 			}
@@ -436,9 +412,7 @@ public class LaunchFrame extends JFrame {
 		footer.add(edit);
 		footer.add(users);
 		footer.add(footerLogo);
-		footer.add(footerCreeper);
 		footer.add(launch);
-		footer.add(donate);
 		footer.add(serverbutton);
 		footer.add(mapInstall);
 		footer.add(mapInstallLocation);
@@ -916,7 +890,6 @@ public class LaunchFrame extends JFrame {
 	public void updateLocale() {
 		if(I18N.currentLocale == Locale.deDE) {
 			edit.setBounds(420, 20, 120, 30);
-			donate.setBounds(330, 20, 80, 30);
 			mapInstall.setBounds(620, 20, 190, 30);
 			mapInstallLocation.setBounds(420, 20, 190, 30);
 			serverbutton.setBounds(420, 20, 390, 30);
@@ -924,7 +897,6 @@ public class LaunchFrame extends JFrame {
 			tpInstall.setBounds(620, 20, 190, 30);
 		} else {
 			edit.setBounds(480, 20, 60, 30);
-			donate.setBounds(390, 20, 80, 30);
 			mapInstall.setBounds(650, 20, 160, 30);
 			mapInstallLocation.setBounds(480, 20, 160, 30);
 			serverbutton.setBounds(480, 20, 330, 30);
@@ -937,7 +909,6 @@ public class LaunchFrame extends JFrame {
 		mapInstall.setText(I18N.getLocaleString("INSTALL_MAP"));
 		serverMap.setText(I18N.getLocaleString("DOWNLOAD_MAP_SERVER"));
 		tpInstall.setText(I18N.getLocaleString("INSTALL_TEXTUREPACK"));
-		donate.setText(I18N.getLocaleString("DONATE_BUTTON"));
 		dropdown_[0] = I18N.getLocaleString("PROFILE_SELECT");
 		dropdown_[1] = I18N.getLocaleString("PROFILE_CREATE");
 		writeUsers((String)users.getSelectedItem());
