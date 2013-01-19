@@ -74,7 +74,7 @@ public class NewsPane extends JPanel implements ILauncherPane {
 	@Override
 	public void onVisible() {
 		try {
-			news.setPage("http://127.0.0.1/ftb-ne/news.php");
+			news.setPage("http://ftb-ne.s3.amazonaws.com/news.html");
 			Settings.getSettings().setNewsDate();
 			Settings.getSettings().save();
 			LaunchFrame.getInstance().setNewsIcon();

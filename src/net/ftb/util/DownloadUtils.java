@@ -41,8 +41,8 @@ import net.ftb.log.Logger;
 public class DownloadUtils extends Thread {
 	public static boolean serversLoaded = false; 
 	public static HashMap<String, String> downloadServers = new HashMap<String, String>();
-	private static String serverURL = "http://127.0.0.1/ftb-ne";
-	private static String serverName = "127.0.0.1/ftb-ne";
+	private static String serverURL = "http://ftb-ne.s3.amazonaws.com";
+	private static String serverName = "ftb-ne.s3.amazonaws.com";
 
 	/**
 	 * @param file - the name of the file, as saved to the repo (including extension)
@@ -51,13 +51,13 @@ public class DownloadUtils extends Thread {
 	 */
 	public static String getCreeperhostLink(String file) throws NoSuchAlgorithmException {
 		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
-		resolved += "/direct/" + "/" + file;
+		resolved += "/direct/" + file;
 		HttpURLConnection connection = null;
 		try {
 			connection = (HttpURLConnection) new URL(resolved).openConnection();
 			for(String server : downloadServers.values()) {
 				if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase(serverName)) {
-					resolved = "http://" + server + "/direct/" + "/" + file;
+					resolved = "http://" + server + "/direct/" + file;
 					connection = (HttpURLConnection) new URL(resolved).openConnection();
 				}
 			}
@@ -111,7 +111,7 @@ public class DownloadUtils extends Thread {
 	 */
 	public static boolean fileExists(String file) {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(serverURL + "/direct/" + "/" + file).openStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(serverURL + "/direct/" + file).openStream()));
 			return !reader.readLine().toLowerCase().contains("not found");
 		} catch (Exception e) {
 			return false;
@@ -176,6 +176,7 @@ public class DownloadUtils extends Thread {
 				for(String server : downloadServers.values()) {
 					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase(serverName)) {
 						resolved = "http://" + server + "/md5/" + url;
+						resolved = resolved.replace(".zip", "");
 						connection = (HttpURLConnection) new URL(resolved).openConnection();
 					} else if(connection.getResponseCode() == 200) {
 						break;
