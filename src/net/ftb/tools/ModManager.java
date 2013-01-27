@@ -113,14 +113,14 @@ public class ModManager extends JDialog {
 			String dynamicLoc = OSUtils.getDynamicStorageLocation();
 			String installPath = Settings.getSettings().getInstallPath();
 			ModPack pack = ModPack.getSelectedPack();
-			String baseLink = (pack.isPrivatePack() ? "privatepacks%5E" + dir + "%5E" + curVersion + "%5E" : "modpacks%5E" + dir + "%5E" + curVersion + "%5E");
+			String baseLink = (pack.isPrivatePack() ? "privatepacks/" + dir + "/" + curVersion + "/" : "modpacks/" + dir + "/" + curVersion + "/");
 			File baseDynamic = new File(dynamicLoc, "ModPacks" + sep + dir + sep);
 			baseDynamic.mkdirs();
 			new File(baseDynamic, modPackName).createNewFile();
-			downloadUrl(baseDynamic.getPath() + sep + modPackName, DownloadUtils.getCreeperhostLink(baseLink + modPackName));
+			downloadUrl(baseDynamic.getPath() + sep + modPackName, DownloadUtils.getHostLink(baseLink + modPackName));
 			String animation = pack.getAnimation();
 			if(!animation.equalsIgnoreCase("empty")) {
-				downloadUrl(baseDynamic.getPath() + sep + animation, DownloadUtils.getCreeperhostLink(baseLink + animation));
+				downloadUrl(baseDynamic.getPath() + sep + animation, DownloadUtils.getHostLink(baseLink + animation));
 			}
 			if(DownloadUtils.isValid(new File(baseDynamic, modPackName), baseLink + modPackName)) {
 				FileUtils.extractZipTo(baseDynamic.getPath() + sep + modPackName, baseDynamic.getPath());

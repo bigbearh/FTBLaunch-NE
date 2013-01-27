@@ -45,7 +45,7 @@ public class LocaleUpdater extends Thread {
 	private void updateFiles() {
 		Logger.logInfo("[i18n] Downloading locale files ...");
 		try {
-			DownloadUtils.downloadToFile(new URL(DownloadUtils.getCreeperhostLink("locales.zip")), archive);
+			DownloadUtils.downloadToFile(new URL(DownloadUtils.getHostLink("locales.zip")), archive);
 			Logger.logInfo("[i18n] Moving files into place ...");
 			if(local.getParentFile().exists()) {
 				FileUtils.delete(local.getParentFile());
@@ -74,7 +74,7 @@ public class LocaleUpdater extends Thread {
 		}
 		cleanUpFiles();
 		try {
-			URLConnection connection = new URL(DownloadUtils.getStaticCreeperhostLink("locales")).openConnection();
+			URLConnection connection = new URL(DownloadUtils.getStaticHostLink("locales")).openConnection();
 			Scanner scanner = new Scanner(connection.getInputStream());
 			remoteVer = scanner.nextInt();
 			Logger.logInfo("[i18n] remoteVer = " + remoteVer);

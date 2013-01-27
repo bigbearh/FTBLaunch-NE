@@ -52,7 +52,7 @@ public class ModpackLoader extends Thread {
 			File modPackFile = new File(OSUtils.getDynamicStorageLocation(), "ModPacks" + File.separator + xmlFile);
 			try {
 				modPackFile.getParentFile().mkdirs();
-				DownloadUtils.downloadToFile(new URL(DownloadUtils.getStaticCreeperhostLink(xmlFile)), modPackFile);
+				DownloadUtils.downloadToFile(new URL(DownloadUtils.getStaticHostLink(xmlFile)), modPackFile);
 			} catch (IOException e) {
 				Logger.logWarn("Failed to load modpacks, loading from backup", e);
 			}
@@ -65,7 +65,7 @@ public class ModpackLoader extends Thread {
 			}
 			if(modPackStream == null) {
 				try {
-					modPackStream = new URL(DownloadUtils.getStaticCreeperhostLink(xmlFile)).openStream();
+					modPackStream = new URL(DownloadUtils.getStaticHostLink(xmlFile)).openStream();
 				} catch (IOException e) {
 					Logger.logError("Completely unable to download the modpack file - check your connection", e);
 				}

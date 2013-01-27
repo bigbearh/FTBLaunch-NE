@@ -41,25 +41,25 @@ import net.ftb.log.Logger;
 public class DownloadUtils extends Thread {
 	public static boolean serversLoaded = false; 
 	public static HashMap<String, String> downloadServers = new HashMap<String, String>();
-	private static String currentmd5 = "";
+	private static String serverURL = "http://ftb-ne.s3.amazonaws.com";
+	private static String serverName = "ftb-ne.s3.amazonaws.com";
+	//private static String serverURL = "http://127.0.0.1/ftb-ne";
+	//private static String serverName = "127.0.0.1/ftb-ne";
 
 	/**
 	 * @param file - the name of the file, as saved to the repo (including extension)
 	 * @return - the direct link
 	 * @throws NoSuchAlgorithmException - see md5
 	 */
-	public static String getCreeperhostLink(String file) throws NoSuchAlgorithmException {
-		if(currentmd5.isEmpty()) {
-			currentmd5 = md5("mcepoch1" + getTime());
-		}
-		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : "http://www.creeperrepo.net";
-		resolved += "/direct/FTB2/" + currentmd5 + "/" + file;
+	public static String getHostLink(String file) throws NoSuchAlgorithmException {
+		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
+		resolved += "/direct/" + file;
 		HttpURLConnection connection = null;
 		try {
 			connection = (HttpURLConnection) new URL(resolved).openConnection();
 			for(String server : downloadServers.values()) {
-				if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase("www.creeperrepo.net")) {
-					resolved = "http://" + server + "/direct/FTB2/" + currentmd5 + "/" + file;
+				if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase(serverName)) {
+					resolved = "http://" + server + "/direct/" + file;
 					connection = (HttpURLConnection) new URL(resolved).openConnection();
 				}
 			}
@@ -73,16 +73,16 @@ public class DownloadUtils extends Thread {
 	 * @param file - the name of the file, as saved to the repo (including extension)
 	 * @return - the direct link
 	 */
-	public static String getStaticCreeperhostLink(String file) {
-		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : "http://www.creeperrepo.net";
-		resolved += "/static/FTB2/" + file;
+	public static String getStaticHostLink(String file) {
+		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
+		resolved += "/static/" + file;
 		HttpURLConnection connection = null;
 		try {
 			connection = (HttpURLConnection) new URL(resolved).openConnection();
 			if(connection.getResponseCode() != 200) {
 				for(String server : downloadServers.values()) {
-					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase("www.creeperrepo.net")) {
-						resolved = "http://" + server + "/static/FTB2/" + file;
+					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase(serverName)) {
+						resolved = "http://" + server + "/static/" + file;
 						connection = (HttpURLConnection) new URL(resolved).openConnection();
 					} else if(connection.getResponseCode() == 200) {
 						break;
@@ -100,7 +100,7 @@ public class DownloadUtils extends Thread {
 	 */
 	public static boolean staticFileExists(String file) {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(getStaticCreeperhostLink(file)).openStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(getStaticHostLink(file)).openStream()));
 			return !reader.readLine().toLowerCase().contains("not found");
 		} catch (Exception e) {
 			return false;
@@ -113,10 +113,7 @@ public class DownloadUtils extends Thread {
 	 */
 	public static boolean fileExists(String file) {
 		try {
-			if(currentmd5.isEmpty()) {
-				currentmd5 = md5("mcepoch1" + getTime());
-			}
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("http://www.creeperrepo.net/direct/FTB2/" + currentmd5 + "/" + file).openStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(serverURL + "/direct/" + file).openStream()));
 			return !reader.readLine().toLowerCase().contains("not found");
 		} catch (Exception e) {
 			return false;
@@ -140,41 +137,6 @@ public class DownloadUtils extends Thread {
 			}
 		}
 		return result;
-	}
-
-	/**
-	 * gets the time from the creeperhost servers
-	 * @return - the time in the DDMMYY format
-	 */
-	public static String getTime() {
-		String content = null;
-		Scanner scanner = null;
-		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : "http://www.creeperrepo.net";
-		resolved += "/getdate";
-		HttpURLConnection connection = null;
-		try {
-			connection = (HttpURLConnection) new URL(resolved).openConnection();
-			if(connection.getResponseCode() != 200) {
-				for(String server : downloadServers.values()) {
-					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase("www.creeperrepo.net")) {
-						resolved = "http://" + server + "/getdate";
-						connection = (HttpURLConnection) new URL(resolved).openConnection();
-					} else if(connection.getResponseCode() == 200) {
-						break;
-					}
-				}
-			}
-			scanner = new Scanner(connection.getInputStream());
-			scanner.useDelimiter( "\\Z" );
-			content = scanner.next();
-		} catch (IOException e) { 
-		} finally {
-			connection.disconnect();
-			if (scanner != null) {
-				scanner.close();
-			}
-		}
-		return content;
 	}
 
 	/**
@@ -207,15 +169,17 @@ public class DownloadUtils extends Thread {
 	public static boolean isValid(File file, String url) throws IOException {
 		String content = null;
 		Scanner scanner = null;
-		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : "http://www.creeperrepo.net";
-		resolved += "/md5/FTB2/" + url;
+		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
+		resolved += "/md5/" + url;
+		resolved = resolved.replace(".zip", "");
 		HttpURLConnection connection = null;
 		try {
 			connection = (HttpURLConnection) new URL(resolved).openConnection();
 			if(connection.getResponseCode() != 200) {
 				for(String server : downloadServers.values()) {
-					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase("www.creeperrepo.net")) {
-						resolved = "http://" + server + "/md5/FTB2/" + url;
+					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase(serverName)) {
+						resolved = "http://" + server + "/md5/" + url;
+						resolved = resolved.replace(".zip", "");
 						connection = (HttpURLConnection) new URL(resolved).openConnection();
 					} else if(connection.getResponseCode() == 200) {
 						break;
@@ -272,10 +236,10 @@ public class DownloadUtils extends Thread {
 	 */
 	@Override
 	public void run() {
-		downloadServers.put("Automatic", "www.creeperrepo.net");
+		downloadServers.put("Standard", serverName);
 		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(new URL("http://www.creeperrepo.net/mirrors").openStream()));
+			in = new BufferedReader(new InputStreamReader(new URL(serverURL + "/mirrors").openStream()));
 			String line;
 			while((line = in.readLine()) != null) {
 				String[] splitString = line.split(",");

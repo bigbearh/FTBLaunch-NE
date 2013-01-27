@@ -135,12 +135,12 @@ public class Map {
 		File verFile = new File(tempDir, "version");
 		URL url_;
 		if(!upToDate(verFile)) {
-			url_ = new URL(DownloadUtils.getStaticCreeperhostLink(logo));
+			url_ = new URL(DownloadUtils.getStaticHostLink(logo));
 			this.logo = Toolkit.getDefaultToolkit().createImage(url_);
 			BufferedImage tempImg = ImageIO.read(url_);
 			ImageIO.write(tempImg, "png", new File(tempDir, logo));
 			tempImg.flush();
-			url_ = new URL(DownloadUtils.getStaticCreeperhostLink(image));
+			url_ = new URL(DownloadUtils.getStaticHostLink(image));
 			this.image = Toolkit.getDefaultToolkit().createImage(url_);
 			tempImg = ImageIO.read(url_);
 			ImageIO.write(tempImg, "png", new File(tempDir, image));
@@ -149,7 +149,7 @@ public class Map {
 			if(new File(tempDir, logo).exists()) {
 				this.logo = Toolkit.getDefaultToolkit().createImage(tempDir.getPath() + sep + logo);
 			} else {
-				url_ = new URL(DownloadUtils.getStaticCreeperhostLink(logo));
+				url_ = new URL(DownloadUtils.getStaticHostLink(logo));
 				this.logo = Toolkit.getDefaultToolkit().createImage(url_);
 				BufferedImage tempImg = ImageIO.read(url_);
 				ImageIO.write(tempImg, "png", new File(tempDir, logo));
@@ -158,7 +158,7 @@ public class Map {
 			if(new File(tempDir, image).exists()) {
 				this.image = Toolkit.getDefaultToolkit().createImage(tempDir.getPath() + sep + image);
 			} else {
-				url_ = new URL(DownloadUtils.getStaticCreeperhostLink(image));
+				url_ = new URL(DownloadUtils.getStaticHostLink(image));
 				this.image = Toolkit.getDefaultToolkit().createImage(url_);
 				BufferedImage tempImg = ImageIO.read(url_);
 				ImageIO.write(tempImg, "png", new File(tempDir, image));
