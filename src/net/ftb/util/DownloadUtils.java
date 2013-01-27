@@ -43,6 +43,8 @@ public class DownloadUtils extends Thread {
 	public static HashMap<String, String> downloadServers = new HashMap<String, String>();
 	private static String serverURL = "http://ftb-ne.s3.amazonaws.com";
 	private static String serverName = "ftb-ne.s3.amazonaws.com";
+	//private static String serverURL = "http://127.0.0.1/ftb-ne";
+	//private static String serverName = "127.0.0.1/ftb-ne";
 
 	/**
 	 * @param file - the name of the file, as saved to the repo (including extension)
@@ -169,6 +171,7 @@ public class DownloadUtils extends Thread {
 		Scanner scanner = null;
 		String resolved = (downloadServers.containsKey(Settings.getSettings().getDownloadServer())) ? "http://" + downloadServers.get(Settings.getSettings().getDownloadServer()) : serverURL;
 		resolved += "/md5/" + url;
+		resolved = resolved.replace(".zip", "");
 		HttpURLConnection connection = null;
 		try {
 			connection = (HttpURLConnection) new URL(resolved).openConnection();
