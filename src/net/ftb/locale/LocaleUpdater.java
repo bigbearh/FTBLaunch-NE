@@ -74,7 +74,7 @@ public class LocaleUpdater extends Thread {
 		}
 		cleanUpFiles();
 		try {
-			URLConnection connection = new URL(DownloadUtils.getStaticHostLink("locales")).openConnection();
+			URLConnection connection = new URL(DownloadUtils.getStaticHostLink("locales.txt")).openConnection();
 			Scanner scanner = new Scanner(connection.getInputStream());
 			remoteVer = scanner.nextInt();
 			Logger.logInfo("[i18n] remoteVer = " + remoteVer);

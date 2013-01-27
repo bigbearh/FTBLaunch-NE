@@ -179,7 +179,7 @@ public class DownloadUtils extends Thread {
 				for(String server : downloadServers.values()) {
 					if(connection.getResponseCode() != 200 && !server.equalsIgnoreCase(serverName)) {
 						resolved = "http://" + server + "/md5/" + url;
-						resolved = resolved.replace(".zip", "");
+						resolved = resolved.replace(".zip", ".txt");
 						connection = (HttpURLConnection) new URL(resolved).openConnection();
 					} else if(connection.getResponseCode() == 200) {
 						break;
@@ -239,7 +239,7 @@ public class DownloadUtils extends Thread {
 		downloadServers.put("Standard", serverName);
 		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(new URL(serverURL + "/mirrors").openStream()));
+			in = new BufferedReader(new InputStreamReader(new URL(serverURL + "/mirrors.txt").openStream()));
 			String line;
 			while((line = in.readLine()) != null) {
 				String[] splitString = line.split(",");

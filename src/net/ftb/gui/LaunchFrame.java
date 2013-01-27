@@ -973,7 +973,7 @@ public class LaunchFrame extends JFrame {
 		int i = 0;
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(new URL("http://ftb-ne.s3.amazonaws.com/newsupdate").openStream()));
+			reader = new BufferedReader(new InputStreamReader(new URL("http://ftb-ne.s3.amazonaws.com/newsupdate.txt").openStream()));
 			ArrayList<Long> timeStamps = new ArrayList<Long>();
 			String s = reader.readLine();
 			s = s.trim();
