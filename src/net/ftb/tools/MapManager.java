@@ -106,7 +106,7 @@ public class MapManager extends JDialog {
 			Map map = Map.getSelectedMap();
 			new File(installPath + "/Maps/" + dir + "/").mkdirs();
 			new File(installPath + "/Maps/" + dir + "/" + mapName).createNewFile();
-			downloadUrl(installPath + "/Maps/" + dir + "/" + mapName, DownloadUtils.getHostLink("maps%5E" + dir + "%5E" + map.getVersion().replace(".", "_") + "%5E" + mapName));
+			downloadUrl(installPath + "/Maps/" + dir + "/" + mapName, DownloadUtils.getHostLink("maps/" + dir + "/" + map.getVersion().replace(".", "_") + "/" + mapName));
 			FileUtils.extractZipTo(installPath + "/Maps/" + dir + "/" + mapName, installPath + "/Maps/" + dir);
 			installMap(mapName, dir);
 		}
